@@ -2,7 +2,7 @@
 
 **************************************************************************
 
-Plugin Name:  Quick Login
+Plugin Name:  QuickLogin
 Plugin URI:   https://github.com/danielpunkass/QuickLogin
 Version:      1.0
 Description:  Adds a keyboard shortcut to your blog for easily logging in.
