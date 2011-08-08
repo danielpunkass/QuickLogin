@@ -1,0 +1,7 @@
+To use this plugin, just copy the "QuickLogin" folder to 
+
+[YourWordPressSite]/wp-content/plugins/
+
+And then enable the plugin from your WordPress admin panel plugins page.
+
+The plugin code is licensed under the terms of the MIT license.
