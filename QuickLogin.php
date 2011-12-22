@@ -32,7 +32,7 @@ function insertQuickLoginTrigger() {
 	$triggerKeyCode = 27;
 
 	// When the user "logs in" we send them to the appropriate login page URL, redirecting to current URL
-	$loginPageURL = wp_login_url(get_permalink());
+	$loginPageURL = wp_login_url(($_SERVER["HTTPS"] ? "https" : "http") . "://" . $_SERVER["SERVER_NAME"] . ($_SERVER["SERVER_PORT"] != 80 ? ":".$_SERVER["SERVER_PORT"] : "") . $_SERVER["REQUEST_URI"]);
 	
 	echo <<<TRIGGEREND
 	<script type="text/javascript">
