@@ -11,17 +11,6 @@ Author URI:   http://www.red-sweater.com/blog/
 
 **************************************************************************/
 
-function enqueueQuickLoginScripts() {
-
-	if( is_user_logged_in() ) {
-		return;
-	}
-	
-	// We depend upon jQuery that is bundled with WordPress, for easy keystroke detection
-	wp_enqueue_script("jquery"); 
-}
-add_action('init', 'enqueueQuickLoginScripts');
-
 function insertQuickLoginTrigger() {
 
 	if( is_user_logged_in() ) {
@@ -29,29 +18,30 @@ function insertQuickLoginTrigger() {
 	}
 	
 	// If you want to use another keystroke besides ESC, set it here
-	$triggerKeyCode = 27;
+	$triggerKeyCode = apply_filters( 'quicklogin_keycode', 27);
 
 	// When the user "logs in" we send them to the appropriate login page URL, redirecting to current URL
-	$loginPageURL = wp_login_url(($_SERVER["HTTPS"] ? "https" : "http") . "://" . $_SERVER["SERVER_NAME"] . ($_SERVER["SERVER_PORT"] != 80 ? ":".$_SERVER["SERVER_PORT"] : "") . $_SERVER["REQUEST_URI"]);
+	$loginPageURL = wp_login_url( ( is_ssl() ? "https://" : "http://" ) . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] );
 	
-	echo <<<TRIGGEREND
+	?>
+	
 	<script type="text/javascript">
 	//QuickLogin by Red Sweater Software
+	
+	document['onkeyup'] = function(event){
+		var e = event || window.event;
 
-	var triggerKeyCode = $triggerKeyCode;
+		var triggerKeyCode = <?php echo $triggerKeyCode; ?>;
+		var loginPageURL = "<?php echo $loginPageURL; ?>";
 
-	jQuery(document).keyup(function(e) {
-		if (e.keyCode == triggerKeyCode) {
-			promptForWordPressLogin();
+		if ( e.keyCode == triggerKeyCode ) {
+			document.location.href=loginPageURL;
 		}
-	});
-
-	function promptForWordPressLogin() {
-		document.location.href="$loginPageURL";
 	}
-
 	</script>
-TRIGGEREND;
+	
+	<?php
+
 }
 add_action('wp_head', 'insertQuickLoginTrigger');
 
