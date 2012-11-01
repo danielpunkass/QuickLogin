@@ -18,9 +18,6 @@ $triggerKeyCode = 27;
 // until AFTER the plugin is given a chance to override.
 require_once(ABSPATH . WPINC . '/pluggable.php');
 
-// We depend upon jQuery that is bundled with WordPress, for easy keystroke detection
-wp_enqueue_script("jquery"); 
-
 function insertQuickLoginTrigger() {
 
 	// When the user "logs in" we send them to the appropriate login page URL, redirecting to current URL
@@ -51,6 +48,11 @@ TRIGGEREND;
 $isLoggedIn = is_user_logged_in();
 
 if ($isLoggedIn == False) {
+	function load_scripts() {
+		// We depend upon jQuery that is bundled with WordPress, for easy keystroke detection
+		wp_enqueue_script("jquery"); 
+	}
+	add_action('wp_enqueue_scripts', 'load_scripts');
 	add_action('wp_head', 'insertQuickLoginTrigger');
 }
 
