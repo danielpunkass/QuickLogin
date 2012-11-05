@@ -4,56 +4,45 @@
 
 Plugin Name:  QuickLogin
 Plugin URI:   https://github.com/danielpunkass/QuickLogin
-Version:      1.0.1
+Version:      1.0
 Description:  Adds a keyboard shortcut to your blog for easily logging in.
 Author:       Daniel Jalkut, Red Sweater Software
 Author URI:   http://www.red-sweater.com/blog/
 
 **************************************************************************/
 
-// If you want to use another keystroke besides ESC, set it here
-$triggerKeyCode = 27;
-
-// We depend upon get-current-user type functions, which are not defined by default
-// until AFTER the plugin is given a chance to override.
-require_once(ABSPATH . WPINC . '/pluggable.php');
-
 function insertQuickLoginTrigger() {
 
-	// When the user "logs in" we send them to the appropriate login page URL, redirecting to current URL
-	$loginPageURL = wp_login_url(get_permalink());
-	global $triggerKeyCode;
+	if( is_user_logged_in() ) {
+		return;
+	}
 	
-	echo <<<TRIGGEREND
+	// If you want to use another keystroke besides ESC, set it here
+	$triggerKeyCode = apply_filters( 'quicklogin_keycode', 27);
+
+	// When the user "logs in" we send them to the appropriate login page URL, redirecting to current URL
+	$loginPageURL = wp_login_url( ( is_ssl() ? "https://" : "http://" ) . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"] );
+	
+	?>
+	
 	<script type="text/javascript">
-	<!-- QuickLogin by Red Sweater Software
+	//QuickLogin by Red Sweater Software
+	
+	document['onkeyup'] = function(event){
+		var e = event || window.event;
 
-	var triggerKeyCode = $triggerKeyCode;
+		var triggerKeyCode = <?php echo $triggerKeyCode; ?>;
+		var loginPageURL = "<?php echo $loginPageURL; ?>";
 
-	jQuery(document).keyup(function(e) {
-		if (e.keyCode == triggerKeyCode) {
-			promptForWordPressLogin();
+		if ( e.keyCode == triggerKeyCode ) {
+			document.location.href=loginPageURL;
 		}
-	});
-
-	function promptForWordPressLogin() {
-		document.location.href="$loginPageURL";
 	}
-
-	-->
 	</script>
-TRIGGEREND;
-}
+	
+	<?php
 
-$isLoggedIn = is_user_logged_in();
-
-if ($isLoggedIn == False) {
-	function load_scripts() {
-		// We depend upon jQuery that is bundled with WordPress, for easy keystroke detection
-		wp_enqueue_script("jquery"); 
-	}
-	add_action('wp_enqueue_scripts', 'load_scripts');
-	add_action('wp_head', 'insertQuickLoginTrigger');
 }
+add_action('wp_head', 'insertQuickLoginTrigger');
 
 ?>
