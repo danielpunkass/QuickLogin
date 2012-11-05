@@ -1,9 +1,10 @@
 === QuickLogin ===
-Contributors: redsweater
+Contributors: redsweater, gluten
 Tags: utilities, login, admin
 Requires at least: 3.4.2
 Tested up to: 3.5
 Stable tag: 1.0.1
+Pending release: 1.0.2 will feature latest commits from Sam Margulies (gluten) to remove dependency on jQuery and fix permalink computation.
 License: MIT
 License URI: http://opensource.org/licenses/MIT
 
