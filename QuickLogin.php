@@ -13,7 +13,6 @@ Author URI:   http://www.red-sweater.com/blog/
 
 // If you want to use another keystroke besides ESC, set it here
 $triggerKeyCode = apply_filters( 'quicklogin_keycode', 27);
-require_once(ABSPATH . WPINC . '/pluggable.php');
 
 function insertQuickLoginTrigger() {
 
@@ -69,11 +68,28 @@ function insertQuickAdminTrigger() {
 
 }
 
-if( is_user_logged_in() ) {
-    add_action('wp_head', 'insertQuickAdminTrigger');
+// We may not implicitly get the is_user_logged_in() function from pluggable.php, 
+// so define it ourselves if needed.
+if ( !function_exists('is_user_logged_in') ) :
+function is_user_logged_in() {
+	$user = wp_get_current_user();
+
+	if ( empty( $user->ID ) )
+		return false;
+
+	return true;
 }
-else {
-    add_action('wp_head', 'insertQuickLoginTrigger');
+endif;
+
+function insertTriggerCode() {
+	if( is_user_logged_in() ) {
+		add_action('wp_head', 'insertQuickAdminTrigger');
+	}
+	else {
+		add_action('wp_head', 'insertQuickLoginTrigger');
+	}
 }
+
+add_action('init', 'insertTriggerCode');
 
 ?>
