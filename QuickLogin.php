@@ -4,7 +4,7 @@
 
 Plugin Name:  QuickLogin
 Plugin URI:   https://github.com/danielpunkass/QuickLogin
-Version:      1.0.1
+Version:      1.0.2
 Description:  Adds a keyboard shortcut to your blog for easily logging in.
 Author:       Daniel Jalkut, Red Sweater Software
 Author URI:   http://www.red-sweater.com/blog/
