@@ -12,7 +12,7 @@ Author URI:   http://www.red-sweater.com/blog/
 **************************************************************************/
 
 // If you want to use another keystroke besides ESC, set it here
-$triggerKeyCode = 27;
+$triggerKeyCode = apply_filters( 'quicklogin_keycode', 27);
 require_once(ABSPATH . WPINC . '/pluggable.php');
 
 function insertQuickLoginTrigger() {
