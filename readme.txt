@@ -3,7 +3,7 @@ Contributors: redsweater, gluten, stephenhowells
 Tags: utilities, login, admin
 Requires at least: 3.4.2
 Tested up to: 4.0
-Stable tag: 1.0.2
+Stable tag: 1.0.2r2
 License: MIT
 License URI: http://opensource.org/licenses/MIT
 
